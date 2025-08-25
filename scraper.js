@@ -17,6 +17,16 @@ app.use(express.static(__dirname));
 const parser = new Parser();
 const PORT = 3000;
 
+// Liste de flux RSS à agréger
+const RSS_FEEDS = [
+  "http://feeds.bbci.co.uk/news/world/rss.xml",
+  "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+  "https://www.lemonde.fr/rss/une.xml",
+  "https://www.rfi.fr/fr/rss",
+  "https://feeds.a.dj.com/rss/RSSWorldNews.xml"
+  // Ajoutez d'autres flux ici si besoin
+];
+
 function absolutize(maybeUrl, base) {
   if (!maybeUrl) return null;
   try {
@@ -129,7 +139,8 @@ async function fetchNewsFromRSS(rssUrl) {
     const feed = await parser.parseURL(rssUrl);
     let articles = [];
 
-    for (const item of feed.items.slice(0, 5)) {
+    // Augmentez le nombre d'articles récupérés par flux (par exemple 15)
+    for (const item of feed.items.slice(0, 15)) {
       let article = {
         title: item.title,
         link: item.link,
@@ -154,12 +165,45 @@ async function fetchNewsFromRSS(rssUrl) {
   }
 }
 
+// Nouvelle fonction pour agréger les news de toutes les sources
+async function fetchAllNews() {
+  let allArticles = [];
+  for (const url of RSS_FEEDS) {
+    const news = await fetchNewsFromRSS(url);
+    allArticles = allArticles.concat(news);
+  }
+  // Trier par date décroissante
+  allArticles.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  return allArticles;
+}
+
+// Modifiez la route /news pour retourner toutes les news agrégées
 app.get("/news", async (req, res) => {
-  const rssUrl = "http://feeds.bbci.co.uk/news/world/rss.xml";
-  const news = await fetchNewsFromRSS(rssUrl);
+  const news = await fetchAllNews();
   res.json(news);
 });
 
 app.listen(PORT, () => {
   console.log(`🚀 Serveur lancé sur http://localhost:${PORT}`);
+});
+
+let lastEstimate = 10; // valeur par défaut
+
+async function measureEstimate() {
+  const start = Date.now();
+  try {
+    // On ne teste qu’un seul flux rapide pour estimer
+    await parser.parseURL(RSS_FEEDS[0]);
+    const elapsed = (Date.now() - start) / 1000;
+    // On estime le total = temps moyen × nombre de flux
+    lastEstimate = Math.ceil(elapsed * RSS_FEEDS.length * 2); 
+  } catch {
+    lastEstimate = 10;
+  }
+  return lastEstimate;
+}
+
+app.get("/estimate", async (req, res) => {
+  const est = await measureEstimate();
+  res.json({ estimate: est });
 });

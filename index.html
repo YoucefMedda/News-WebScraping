@@ -1,57 +1,204 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>📰 Dernières News</title>
-  <style>
-    body { font-family: Arial, sans-serif; background:#f5f5f5; padding:20px; }
-    h1 { display: flex; align-items: center; font-size: 1.8em; }
-    .news { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 20px; margin-top: 20px; }
-    .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s; }
-    .card:hover { transform: scale(1.02); }
-    .card img { width: 100%; height: auto; border-radius: 6px; object-fit: cover; max-height: 200px; }
-    .card h2 { font-size: 1.2em; margin: 10px 0; }
-    .card p { color: #555; font-size: 0.95em; }
-    .card a { display: inline-block; margin-top: 10px; color: #0066cc; font-weight: bold; text-decoration: none; }
-  </style>
+    <meta charset="UTF-8">
+    <title>News Aggregator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Optionnel : Bootstrap pour le style rapide -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body { background: #f8f9fa; }
+        .news-item { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; margin-bottom: 24px; padding: 20px; }
+        .news-item img { max-width: 100%; height: auto; margin: 10px 0; border-radius: 4px; }
+        .news-item h3 { font-size: 1.3rem; }
+        .news-item small { color: #888; }
+        .pagination { justify-content: center; }
+        /* Loader styles */
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        .lds-ring {
+          display: inline-block;
+          position: relative;
+          width: 80px;
+          height: 80px;
+        }
+        .lds-ring div {
+          box-sizing: border-box;
+          display: block;
+          position: absolute;
+          width: 64px;
+          height: 64px;
+          margin: 8px;
+          border: 8px solid #007bff;
+          border-radius: 50%;
+          animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+          border-color: #007bff transparent transparent transparent;
+        }
+        .lds-ring div:nth-child(1) {
+          animation-delay: -0.45s;
+        }
+        .lds-ring div:nth-child(2) {
+          animation-delay: -0.3s;
+        }
+        .lds-ring div:nth-child(3) {
+          animation-delay: -0.15s;
+        }
+        @keyframes lds-ring {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+        .loader-message {
+            margin-top: 18px;
+            font-size: 1.1rem;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-  <h1>📰 Dernières News</h1>
-  <div class="news" id="news"></div>
+    <div class="container py-4">
+        <h1 class="mb-4">Actualités Agrégées</h1>
+        <div id="news-list"></div>
+        <nav>
+            <ul class="pagination" id="pagination"></ul>
+        </nav>
+    </div>
 
-  <script>
-    async function loadNews() {
-      try {
-        
-        const res = await fetch("http://localhost:3000/news");
-        const data = await res.json();
+    <script>
+      let news = [];
+      let currentPage = 1;
+      const pageSize = 10;
+      let loaderInterval = null;
+      let loaderStartTime = null;
+      let estimatedSeconds = 10; // valeur par défaut
 
-        const container = document.getElementById("news");
-        container.innerHTML = "";
+      async function showLoader() {
+          const container = document.getElementById('news-list');
+          loaderStartTime = Date.now();
 
-        if (data.length === 0) {
-          container.innerHTML = "<p>Aucune news disponible pour l’instant.</p>";
-          return;
-        }
+          // récupérer estimation du serveur
+          try {
+              const res = await fetch('/estimate');
+              const data = await res.json();
+              estimatedSeconds = data.estimate;
+          } catch {
+              estimatedSeconds = 10;
+          }
 
-        data.forEach(article => {
-          const div = document.createElement("div");
-          div.className = "card";
-          div.innerHTML = `
-            ${article.image ? `<img src="${article.image}" alt="image">` : ""}
-            <h2>${article.title}</h2>
-            <p>${article.summary || ""}</p>
-            <a href="${article.link}" target="_blank">🔗 Lire l'article</a>
+          container.innerHTML = `
+              <div class="loader-container">
+                  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                  <div class="loader-message" id="loader-message">
+                      Veuillez patienter, récupération des actualités en cours...
+                      <br>
+                      Temps restant estimé : <span id="loader-seconds">${estimatedSeconds}</span> seconde(s)
+                  </div>
+              </div>
           `;
-          container.appendChild(div);
-        });
-      } catch (err) {
-        console.error("Erreur lors du chargement des news :", err);
-        document.getElementById("news").innerHTML = "<p>⚠️ Impossible de charger les news.</p>";
-      }
-    }
+          document.getElementById('pagination').innerHTML = '';
 
-    loadNews();
-  </script>
+          clearInterval(loaderInterval);
+          loaderInterval = setInterval(() => {
+              const elapsed = Math.floor((Date.now() - loaderStartTime) / 1000);
+              let remaining = estimatedSeconds - elapsed;
+              if (remaining < 1) remaining = 1;
+              const secondsSpan = document.getElementById('loader-seconds');
+              if (secondsSpan) {
+                  secondsSpan.textContent = remaining;
+              }
+          }, 1000);
+      }
+
+      function hideLoader() {
+          clearInterval(loaderInterval);
+      }
+
+      function renderNews() {
+          hideLoader();
+          const container = document.getElementById('news-list');
+          container.innerHTML = '';
+          const start = (currentPage - 1) * pageSize;
+          const end = start + pageSize;
+          news.slice(start, end).forEach(article => {
+              const div = document.createElement('div');
+              div.className = 'news-item';
+              div.innerHTML = `
+                  <h3><a href="${article.link}" target="_blank">${article.title}</a></h3>
+                  <p>${article.summary ? article.summary : ''}</p>
+                  ${article.image ? `<img src="${article.image}" alt="image">` : ''}
+                  <small>${article.pubDate ? new Date(article.pubDate).toLocaleString() : ''}</small>
+              `;
+              container.appendChild(div);
+          });
+      }
+
+      function renderPagination() {
+          const totalPages = Math.ceil(news.length / pageSize);
+          const pagination = document.getElementById('pagination');
+          pagination.innerHTML = '';
+
+          if (totalPages <= 1) return;
+
+          // Bouton précédent
+          const prevLi = document.createElement('li');
+          prevLi.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
+          prevLi.innerHTML = `<a class="page-link" href="#">Précédent</a>`;
+          prevLi.onclick = function(e) {
+              e.preventDefault();
+              if (currentPage > 1) {
+                  currentPage--;
+                  renderNews();
+                  renderPagination();
+              }
+          };
+          pagination.appendChild(prevLi);
+
+          // Numéros de pages
+          for (let i = 1; i <= totalPages; i++) {
+              const li = document.createElement('li');
+              li.className = 'page-item' + (i === currentPage ? ' active' : '');
+              li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+              li.onclick = function(e) {
+                  e.preventDefault();
+                  currentPage = i;
+                  renderNews();
+                  renderPagination();
+              };
+              pagination.appendChild(li);
+          }
+
+          // Bouton suivant
+          const nextLi = document.createElement('li');
+          nextLi.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '');
+          nextLi.innerHTML = `<a class="page-link" href="#">Suivant</a>`;
+          nextLi.onclick = function(e) {
+              e.preventDefault();
+              if (currentPage < totalPages) {
+                  currentPage++;
+                  renderNews();
+                  renderPagination();
+              }
+          };
+          pagination.appendChild(nextLi);
+      }
+
+      async function loadNews() {
+          await showLoader();
+          const res = await fetch('/news');
+          news = await res.json();
+          currentPage = 1;
+          renderNews();
+          renderPagination();
+      }
+      window.onload = loadNews;
+    </script>
 </body>
 </html>
