@@ -1,0 +1,1331 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>News Aggregator - Actualités</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/ticker-style.css">
+    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="assets/css/slicknav.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/slick.css">
+    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- Custom styles for news aggregator -->
+    <style>
+        /* Loader styles */
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        .lds-ring {
+          display: inline-block;
+          position: relative;
+          width: 80px;
+          height: 80px;
+        }
+        .lds-ring div {
+          box-sizing: border-box;
+          display: block;
+          position: absolute;
+          width: 64px;
+          height: 64px;
+          margin: 8px;
+          border: 8px solid #007bff;
+          border-radius: 50%;
+          animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+          border-color: #007bff transparent transparent transparent;
+        }
+        .lds-ring div:nth-child(1) {
+          animation-delay: -0.45s;
+        }
+        .lds-ring div:nth-child(2) {
+          animation-delay: -0.3s;
+        }
+        .lds-ring div:nth-child(3) {
+          animation-delay: -0.15s;
+        }
+        @keyframes lds-ring {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+        .loader-message {
+            margin-top: 18px;
+            font-size: 1.1rem;
+            color: #007bff;
+            text-align: center;
+        }
+        .news-item {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        .news-item:hover {
+            transform: translateY(-2px);
+        }
+        .news-item img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .news-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        .news-item h3 a {
+            color: #333;
+            text-decoration: none;
+        }
+        .news-item h3 a:hover {
+            color: #007bff;
+        }
+        .news-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .news-item small {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .pagination {
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        /* Styles pour la section trending */
+        .trending-area {
+            background: #f8f9fa;
+            padding: 25px 0;
+        }
+        
+        .trending-top {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .trend-top-img {
+            position: relative;
+            height: 380px;
+            overflow: hidden;
+        }
+        
+        .trend-top-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .trending-top:hover .trend-top-img img {
+            transform: scale(1.05);
+        }
+        
+        .trend-top-cap {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 30px 20px 20px;
+            color: white;
+        }
+        
+        .trend-top-cap span {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        
+        .trend-top-cap .bgr {
+            background: #dc3545;
+        }
+        
+        .trend-top-cap .bgb {
+            background: #007bff;
+        }
+        
+        .trend-top-cap .bgg {
+            background: #28a745;
+        }
+        
+        .trend-top-cap h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .trend-top-cap h2 a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .trend-top-cap h2 a:hover {
+            color: #ffc107;
+        }
+        
+        .trend-top-cap p {
+            font-size: 14px;
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        /* Styles pour les articles de droite (plus petits) */
+        .col-lg-4 .trend-top-img {
+            height: 260px;
+        }
+        
+        .col-lg-4 .trend-top-cap {
+            padding: 20px 15px 15px;
+        }
+        
+        .col-lg-4 .trend-top-cap h2 {
+            font-size: 16px;
+        }
+        
+        .col-lg-4 .trend-top-cap p {
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+<!-- Preloader Start -->
+<div id="preloader-active">
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-inner position-relative">
+            <div class="preloader-circle"></div>
+            <div class="preloader-img pere-text">
+                <img src="assets/img/logo/logo.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Preloader Start -->
+<header>
+    <!-- Header Start -->
+    <div class="header-area">
+        <div class="main-header ">
+            <div class="header-top black-bg d-none d-sm-block">
+                <div class="container">
+                    <div class="col-xl-12">
+                        <div class="row d-flex justify-content-between align-items-center">
+                            <div class="header-info-left">
+                                <ul>     
+                                    <li class="title"><span class="flaticon-energy"></span> Actualités en temps réel</li>
+                                    <li>Agrégateur de nouvelles internationales</li>
+                                </ul>
+                            </div>
+                            <div class="header-info-right">
+                                <ul class="header-date">
+                                    <li><span class="flaticon-calendar"></span> <span id="current-date"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-mid gray-bg">
+                <div class="container">
+                    <div class="row d-flex align-items-center">
+                        <!-- Logo -->
+                        <div class="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
+                            <div class="logo">
+                                <a href="index3.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-9 col-md-9">
+                            <div class="header-banner f-right ">
+                                <img src="assets/img/gallery/header_card.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-bottom header-sticky">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-xl-8 col-lg-8 col-md-12 header-flex">
+                            <!-- sticky -->
+                            <div class="sticky-logo">
+                                <a href="index3.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                            </div>
+                            <!-- Main-menu -->
+                            <div class="main-menu d-none d-md-block">
+                                <nav>                  
+                                    <ul id="navigation">
+                                        <li><a href="index3.html">Home</a></li>
+                                        <li><a href="about.html">about</a></li>
+                                        <li><a href="categori.html">Category</a></li>
+                                        <li><a href="latest_news.html">Latest News</a></li>
+                                        <li><a href="#">Pages</a>
+                                            <ul class="submenu">
+                                                <li><a href="blog.html">Blog</a></li>
+                                                <li><a href="blog_details.html">Blog Details</a></li>
+                                                <li><a href="elements.html">Element</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>             
+                        <div class="col-xl-4 col-lg-4 col-md-4">
+                            <div class="header-right f-right d-none d-lg-block">
+                                <!-- Heder social -->
+                                <ul class="header-social">    
+                                    <li><a href="https://www.fb.com/sai4ull"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                    <li> <a href="#"><i class="fab fa-youtube"></i></a></li>
+                                </ul>
+                                <!-- Search Nav -->
+                                <div class="nav-search search-switch">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Mobile Menu -->
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-md-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+</header>
+<main>
+    <!-- Trending Area Start -->
+    <div class="trending-area fix pt-25 gray-bg">
+        <div class="container">
+            <div class="trending-main">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Trending Top -->
+                        <div class="slider-active" id="trending-slider">
+                            <!-- Les actualités du scraper seront chargées ici dynamiquement -->
+                        </div>
+                    </div>
+                    <!-- Right content -->
+                    <div class="col-lg-4">
+                        <!-- Trending Top -->
+                        <div class="row" id="trending-right">
+                            <!-- Les actualités secondaires seront chargées ici dynamiquement -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Trending Area End -->
+    
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1>Actualités Agrégées</h1>
+            </div>
+        </div>
+        <div id="news-list"></div>
+        <nav>
+            <ul class="pagination" id="pagination"></ul>
+        </nav>
+    </div>
+    <section class="whats-news-area pt-50 pb-20 gray-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                <div class="whats-news-wrapper">
+                    <!-- Heading & Nav Button -->
+                    <div class="row justify-content-between align-items-end mb-15">
+                        <div class="col-xl-4">
+                            <div class="section-tittle mb-30">
+                                <h3>Whats New</h3>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-md-9">
+                            <div class="properties__button">
+                                <!--Nav Button  -->                                            
+                                <nav>                                                 
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Lifestyle</a>
+                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Travel</a>
+                                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Fashion</a>
+                                        <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">Sports</a>
+                                        <a class="nav-item nav-link" id="nav-Sports" data-toggle="tab" href="#nav-nav-Sport" role="tab" aria-controls="nav-contact" aria-selected="false">Technology</a>
+                                    </div>
+                                </nav>
+                                <!--End Nav Button  -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tab content -->
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Nav Card -->
+                            <div class="tab-content" id="nav-tabContent">
+                                <!-- card one -->
+                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">       
+                                    <div class="row">
+                                        <!-- Left Details Caption -->
+                                        <div class="col-xl-6 col-lg-12">
+                                            <div class="whats-news-single mb-40 mb-40">
+                                                <div class="whates-img">
+                                                    <img src="assets/img/gallery/whats_news_details1.png" alt="">
+                                                </div>
+                                                <div class="whates-caption">
+                                                    <h4><a href="latest_news.html">Secretart for Economic Air plane that looks like</a></h4>
+                                                    <span>by Alice cloe   -   Jun 19, 2020</span>
+                                                    <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Right single caption -->
+                                        <div class="col-xl-6 col-lg-12">
+                                            <div class="row">
+                                                <!-- single -->
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img1.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img2.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img3.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorg">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img4.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorr">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card two -->
+                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                    <div class="row">
+                                        <!-- Left Details Caption -->
+                                        <div class="col-xl-6">
+                                            <div class="whats-news-single mb-40">
+                                                <div class="whates-img">
+                                                    <img src="assets/img/gallery/whats_right_img2.png" alt="">
+                                                </div>
+                                                <div class="whates-caption">
+                                                    <h4><a href="#">Secretart for Economic Air
+                                                        plane that looks like</a></h4>
+                                                    <span>by Alice cloe   -   Jun 19, 2020</span>
+                                                    <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Right single caption -->
+                                        <div class="col-xl-6 col-lg-12">
+                                            <div class="row">
+                                                <!-- single -->
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img1.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img2.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img3.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorg">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img4.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorr">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card three -->
+                                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                    <div class="row">
+                                        <!-- Left Details Caption -->
+                                        <div class="col-xl-6">
+                                            <div class="whats-news-single mb-40">
+                                                <div class="whates-img">
+                                                    <img src="assets/img/gallery/whats_right_img4.png" alt="">
+                                                </div>
+                                                <div class="whates-caption">
+                                                    <h4><a href="#">Secretart for Economic Air
+                                                        plane that looks like</a></h4>
+                                                    <span>by Alice cloe   -   Jun 19, 2020</span>
+                                                    <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Right single caption -->
+                                        <div class="col-xl-6 col-lg-12">
+                                            <div class="row">
+                                                <!-- single -->
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img1.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img2.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img3.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorg">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img4.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorr">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card fure -->
+                                <div class="tab-pane fade" id="nav-last" role="tabpanel" aria-labelledby="nav-last-tab">
+                                    <div class="row">
+                                        <!-- Left Details Caption -->
+                                        <div class="col-xl-6">
+                                            <div class="whats-news-single mb-40">
+                                                <div class="whates-img">
+                                                    <img src="assets/img/gallery/whats_right_img2.png" alt="">
+                                                </div>
+                                                <div class="whates-caption">
+                                                    <h4><a href="#">Secretart for Economic Air
+                                                        plane that looks like</a></h4>
+                                                    <span>by Alice cloe   -   Jun 19, 2020</span>
+                                                    <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Right single caption -->
+                                        <div class="col-xl-6 col-lg-12">
+                                            <div class="row">
+                                                <!-- single -->
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img1.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img2.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img3.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorg">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img4.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorr">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card Five -->
+                                <div class="tab-pane fade" id="nav-nav-Sport" role="tabpanel" aria-labelledby="nav-Sports">
+                                    <div class="row">
+                                        <!-- Left Details Caption -->
+                                        <div class="col-xl-6">
+                                            <div class="whats-news-single mb-40">
+                                                <div class="whates-img">
+                                                    <img src="assets/img/gallery/whats_news_details1.png" alt="">
+                                                </div>
+                                                <div class="whates-caption">
+                                                    <h4><a href="#">Secretart for Economic Air
+                                                        plane that looks like</a></h4>
+                                                    <span>by Alice cloe   -   Jun 19, 2020</span>
+                                                    <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Right single caption -->
+                                        <div class="col-xl-6 col-lg-12">
+                                            <div class="row">
+                                                <!-- single -->
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img1.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img2.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorb">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img3.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorg">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-lg-6 col-md-6 col-sm-10">
+                                                    <div class="whats-right-single mb-20">
+                                                        <div class="whats-right-img">
+                                                            <img src="assets/img/gallery/whats_right_img4.png" alt="">
+                                                        </div>
+                                                        <div class="whats-right-cap">
+                                                            <span class="colorr">FASHION</span>
+                                                            <h4><a href="latest_news.html">Portrait of group of friends ting eat. market in.</a></h4>
+                                                            <p>Jun 19, 2020</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- End Nav Card -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Banner -->
+                <div class="banner-one mt-20 mb-30">
+                    <img src="assets/img/gallery/body_card1.png" alt="">
+                </div>
+                </div>
+                <div class="col-lg-4">
+                    <!-- Flow Socail -->
+                    <div class="single-follow mb-45">
+                        <div class="single-box">
+                            <div class="follow-us d-flex align-items-center">
+                                <div class="follow-social">
+                                    <a href="#"><img src="assets/img/news/icon-fb.png" alt=""></a>
+                                </div>
+                                <div class="follow-count">  
+                                    <span>8,045</span>
+                                    <p>Fans</p>
+                                </div>
+                            </div> 
+                            <div class="follow-us d-flex align-items-center">
+                                <div class="follow-social">
+                                    <a href="#"><img src="assets/img/news/icon-tw.png" alt=""></a>
+                                </div>
+                                <div class="follow-count">
+                                    <span>8,045</span>
+                                    <p>Fans</p>
+                                </div>
+                            </div>
+                                <div class="follow-us d-flex align-items-center">
+                                <div class="follow-social">
+                                    <a href="#"><img src="assets/img/news/icon-ins.png" alt=""></a>
+                                </div>
+                                <div class="follow-count">
+                                    <span>8,045</span>
+                                    <p>Fans</p>
+                                </div>
+                            </div>
+                            <div class="follow-us d-flex align-items-center">
+                                <div class="follow-social">
+                                    <a href="#"><img src="assets/img/news/icon-yo.png" alt=""></a>
+                                </div>
+                                <div class="follow-count">
+                                    <span>8,045</span>
+                                    <p>Fans</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Most Recent Area -->
+                    <div class="most-recent-area">
+                        <!-- Section Tittle -->
+                        <div class="small-tittle mb-20">
+                            <h4>Most Recent</h4>
+                        </div>
+                        <!-- Details -->
+                        <div class="most-recent mb-40">
+                            <div class="most-recent-img">
+                                <img src="assets/img/gallery/most_recent.png" alt="">
+                                <div class="most-recent-cap">
+                                    <span class="bgbeg">Vogue</span>
+                                    <h4><a href="latest_news.html">What to Wear: 9+ Cute Work <br>
+                                        Outfits to Wear This.</a></h4>
+                                    <p>Jhon  |  2 hours ago</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Single -->
+                        <div class="most-recent-single">
+                            <div class="most-recent-images">
+                                <img src="assets/img/gallery/most_recent1.png" alt="">
+                            </div>
+                            <div class="most-recent-capt">
+                                <h4><a href="latest_news.html">Scarlett’s disappointment at latest accolade</a></h4>
+                                <p>Jhon  |  2 hours ago</p>
+                            </div>
+                        </div>
+                        <!-- Single -->
+                        <div class="most-recent-single">
+                            <div class="most-recent-images">
+                                <img src="assets/img/gallery/most_recent2.png" alt="">
+                            </div>
+                            <div class="most-recent-capt">
+                                <h4><a href="latest_news.html">Most Beautiful Things to Do in Sidney with Your BF</a></h4>
+                                <p>Jhon  |  3 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer>
+    <!-- Footer Start-->
+    <div class="footer-main footer-bg">
+        <div class="footer-area footer-padding">
+            <div class="container">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-8">
+                        <div class="single-footer-caption mb-50">
+                            <div class="single-footer-caption mb-30">
+                                <!-- logo -->
+                                <div class="footer-logo">
+                                    <a href="index3.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+                                </div>
+                                <div class="footer-tittle">
+                                    <div class="footer-pera">
+                                        <p class="info1">Agrégateur de nouvelles internationales en temps réel. Restez informé avec les dernières actualités du monde entier.</p>
+                                        <p class="info2">198 West 21th Street, Suite 721 New York,NY 10010</p>
+                                        <p class="info2">Phone: +95 (0) 123 456 789 Cell: +95 (0) 123 456 789</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-5 col-sm-7">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Articles Populaires</h4>
+                            </div>
+                            <!-- Popular post -->
+                            <div class="whats-right-single mb-20">
+                                <div class="whats-right-img">
+                                    <img src="assets/img/gallery/footer_post1.png" alt="">
+                                </div>
+                                <div class="whats-right-cap">
+                                    <h4><a href="latest_news.html">Actualités internationales en direct</a></h4>
+                                    <p>Admin  |  2 heures</p> 
+                                </div>
+                            </div>
+                            <!-- Popular post -->
+                            <div class="whats-right-single mb-20">
+                                <div class="whats-right-img">
+                                    <img src="assets/img/gallery/footer_post2.png" alt="">
+                                </div>
+                                <div class="whats-right-cap">
+                                    <h4><a href="latest_news.html">Nouvelles technologies et innovations</a></h4>
+                                    <p>Admin  |  3 heures</p> 
+                                </div>
+                            </div>
+                            <!-- Popular post -->
+                            <div class="whats-right-single mb-20">
+                                <div class="whats-right-img">
+                                    <img src="assets/img/gallery/footer_post3.png" alt="">
+                                </div>
+                                <div class="whats-right-cap">
+                                    <h4><a href="latest_news.html">Économie mondiale et marchés</a></h4>
+                                    <p>Admin  |  4 heures</p> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
+                        <div class="single-footer-caption mb-50">
+                            <div class="banner">
+                                <img src="assets/img/gallery/body_card4.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer-bottom aera -->
+        <div class="footer-bottom-area footer-bg">
+            <div class="container">
+                <div class="footer-border">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-xl-12 ">
+                            <div class="footer-copy-right text-center">
+                                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End-->
+</footer>
+
+    <script>
+      let news = [];
+      let currentPage = 1;
+      const pageSize = 10;
+      let loaderInterval = null;
+      let loaderStartTime = null;
+      let estimatedSeconds = 10; // valeur par défaut
+
+      async function showLoader() {
+          const container = document.getElementById('news-list');
+          loaderStartTime = Date.now();
+
+          // récupérer estimation du serveur
+          try {
+              const res = await fetch('/estimate');
+              const data = await res.json();
+              estimatedSeconds = data.estimate;
+          } catch {
+              estimatedSeconds = 10;
+          }
+
+          container.innerHTML = `
+              <div class="loader-container">
+                  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                  <div class="loader-message" id="loader-message">
+                      Veuillez patienter, récupération des actualités en cours...
+                      <br>
+                      Temps restant estimé : <span id="loader-seconds">${estimatedSeconds}</span> seconde(s)
+                  </div>
+              </div>
+          `;
+          document.getElementById('pagination').innerHTML = '';
+
+          clearInterval(loaderInterval);
+          loaderInterval = setInterval(() => {
+              const elapsed = Math.floor((Date.now() - loaderStartTime) / 1000);
+              let remaining = estimatedSeconds - elapsed;
+              if (remaining < 1) remaining = 1;
+              const secondsSpan = document.getElementById('loader-seconds');
+              if (secondsSpan) {
+                  secondsSpan.textContent = remaining;
+              }
+          }, 1000);
+      }
+
+      function hideLoader() {
+          clearInterval(loaderInterval);
+      }
+
+      function showTrendingLoader() {
+          const trendingSlider = document.getElementById('trending-slider');
+          const trendingRight = document.getElementById('trending-right');
+          
+          trendingSlider.innerHTML = `
+              <div class="loader-container">
+                  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                  <div class="loader-message">Chargement des actualités trending...</div>
+              </div>
+          `;
+          
+          trendingRight.innerHTML = `
+              <div class="loader-container">
+                  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                  <div class="loader-message">Chargement...</div>
+              </div>
+          `;
+      }
+
+      function getCategoryFromTitle(title) {
+          const titleLower = title.toLowerCase();
+          if (titleLower.includes('gaza') || titleLower.includes('israel') || titleLower.includes('ukraine') || titleLower.includes('russia')) {
+              return 'INTERNATIONAL';
+          } else if (titleLower.includes('trump') || titleLower.includes('usa') || titleLower.includes('états-unis') || titleLower.includes('politics')) {
+              return 'POLITIQUE';
+          } else if (titleLower.includes('weapons') || titleLower.includes('arms') || titleLower.includes('military') || titleLower.includes('war')) {
+              return 'DÉFENSE';
+          } else if (titleLower.includes('business') || titleLower.includes('economy') || titleLower.includes('finance') || titleLower.includes('market')) {
+              return 'BUSINESS';
+          } else if (titleLower.includes('tech') || titleLower.includes('technology') || titleLower.includes('ai') || titleLower.includes('digital')) {
+              return 'TECH';
+          } else if (titleLower.includes('sport') || titleLower.includes('football') || titleLower.includes('basketball') || titleLower.includes('tennis')) {
+              return 'SPORT';
+          } else {
+              return 'ACTUALITÉ';
+          }
+      }
+
+      function getCategoryClass(category) {
+          switch(category) {
+              case 'BUSINESS': return 'bgr';
+              case 'INTERNATIONAL': return 'bgb';
+              case 'TECH': return 'bgg';
+              case 'POLITIQUE': return 'bgr';
+              case 'DÉFENSE': return 'bgb';
+              case 'SPORT': return 'bgg';
+              default: return 'bgr';
+          }
+      }
+
+      function formatDate(dateString) {
+          if (!dateString) return 'Aujourd\'hui';
+          try {
+              const date = new Date(dateString);
+              if (isNaN(date.getTime())) return 'Aujourd\'hui';
+              return date.toLocaleDateString('fr-FR', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric'
+              });
+          } catch (e) {
+              return 'Aujourd\'hui';
+          }
+      }
+
+      function getDefaultImage(index) {
+          const defaultImages = [
+              'assets/img/trending/trending_top2.jpg',
+              'assets/img/trending/trending_top02.jpg',
+              'assets/img/trending/trending_top03.jpg',
+              'assets/img/trending/trending_top3.jpg',
+              'assets/img/trending/trending_top4.jpg'
+          ];
+          return defaultImages[index % defaultImages.length];
+      }
+
+      function renderTrendingSection() {
+          if (news.length === 0) return;
+          // Filtrer les articles avec image non nulle et non vide
+          const newsWithImages = news.filter(article => article.image && article.image.trim() !== '');
+          // Remplir le slider principal (3 premières actualités)
+          const trendingSlider = document.getElementById('trending-slider');
+          trendingSlider.innerHTML = '';
+          const mainTrending = newsWithImages.slice(0, 3);
+          mainTrending.forEach((article, index) => {
+              const sliderDiv = document.createElement('div');
+              sliderDiv.className = 'single-slider';
+              const category = getCategoryFromTitle(article.title);
+              const categoryClass = getCategoryClass(category);
+              const formattedDate = formatDate(article.pubDate);
+              const imageSrc = article.image;
+              sliderDiv.innerHTML = `
+                  <div class="trending-top mb-30">
+                      <div class="trend-top-img">
+                          <img src="${imageSrc}" alt="${article.title}" 
+                               onerror="this.src='${getDefaultImage(index)}'">
+                          <div class="trend-top-cap">
+                              <span class="${categoryClass}" data-animation="fadeInUp" data-delay=".2s" data-duration="1000ms">${category}</span>
+                              <h2><a href="${article.link}" target="_blank" data-animation="fadeInUp" data-delay=".4s" data-duration="1000ms">${article.title}</a></h2>
+                              <p data-animation="fadeInUp" data-delay=".6s" data-duration="1000ms">${formattedDate}</p>
+                          </div>
+                      </div>
+                  </div>
+              `;
+              trendingSlider.appendChild(sliderDiv);
+          });
+          // Remplir la section droite (2 actualités suivantes)
+          const trendingRight = document.getElementById('trending-right');
+          trendingRight.innerHTML = '';
+          const rightTrending = newsWithImages.slice(3, 5);
+          rightTrending.forEach((article, index) => {
+              const colDiv = document.createElement('div');
+              colDiv.className = 'col-lg-12 col-md-6 col-sm-6';
+              const category = getCategoryFromTitle(article.title);
+              const categoryClass = getCategoryClass(category);
+              const formattedDate = formatDate(article.pubDate);
+              const imageSrc = article.image;
+              colDiv.innerHTML = `
+                  <div class="trending-top mb-30">
+                      <div class="trend-top-img">
+                          <img src="${imageSrc}" alt="${article.title}" 
+                               onerror="this.src='${getDefaultImage(index + 3)}'">
+                          <div class="trend-top-cap trend-top-cap2">
+                              <span class="${categoryClass}">${category}</span>
+                              <h2><a href="${article.link}" target="_blank">${article.title.length > 60 ? article.title.substring(0, 60) + '...' : article.title}</a></h2>
+                              <p>${formattedDate}</p>
+                          </div>
+                      </div>
+                  </div>
+              `;
+              trendingRight.appendChild(colDiv);
+          });
+      }
+
+      function renderNews() {
+          hideLoader();
+          const container = document.getElementById('news-list');
+          container.innerHTML = '';
+          const start = (currentPage - 1) * pageSize;
+          const end = start + pageSize;
+          // Filtrer les articles avec image non nulle et non vide
+          const newsWithImages = news.filter(article => article.image && article.image.trim() !== '');
+          newsWithImages.slice(start, end).forEach((article, index) => {
+              const div = document.createElement('div');
+              div.className = 'news-item';
+              const formattedDate = formatDate(article.pubDate);
+              const imageSrc = article.image;
+              div.innerHTML = `
+                  <h3><a href="${article.link}" target="_blank">${article.title}</a></h3>
+                  <p>${article.summary ? article.summary : ''}</p>
+                  <img src="${imageSrc}" alt="${article.title}" onerror="this.src='${getDefaultImage(index)}'" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 4px;">
+                  <small>${formattedDate}</small>
+              `;
+              container.appendChild(div);
+          });
+      }
+
+      function renderPagination() {
+          const totalPages = Math.ceil(news.length / pageSize);
+          const pagination = document.getElementById('pagination');
+          pagination.innerHTML = '';
+
+          if (totalPages <= 1) return;
+
+          // Bouton précédent
+          const prevLi = document.createElement('li');
+          prevLi.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
+          prevLi.innerHTML = `<a class="page-link" href="#">Précédent</a>`;
+          prevLi.onclick = function(e) {
+              e.preventDefault();
+              if (currentPage > 1) {
+                  currentPage--;
+                  renderNews();
+                  renderPagination();
+              }
+          };
+          pagination.appendChild(prevLi);
+
+          // Numéros de pages
+          for (let i = 1; i <= totalPages; i++) {
+              const li = document.createElement('li');
+              li.className = 'page-item' + (i === currentPage ? ' active' : '');
+              li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+              li.onclick = function(e) {
+                  e.preventDefault();
+                  currentPage = i;
+                  renderNews();
+                  renderPagination();
+              };
+              pagination.appendChild(li);
+          }
+
+          // Bouton suivant
+          const nextLi = document.createElement('li');
+          nextLi.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '');
+          nextLi.innerHTML = `<a class="page-link" href="#">Suivant</a>`;
+          nextLi.onclick = function(e) {
+              e.preventDefault();
+              if (currentPage < totalPages) {
+                  currentPage++;
+                  renderNews();
+                  renderPagination();
+              }
+          };
+          pagination.appendChild(nextLi);
+      }
+
+      function renderWhatsNewSection() {
+          // Filtrer les news avec image
+          const newsWithImages = news.filter(article => article.image && article.image.trim() !== '');
+          if (newsWithImages.length === 0) return;
+          // News principale à gauche
+          const main = newsWithImages[0];
+          const mainDiv = document.querySelector('.whats-news-single.mb-40.mb-40');
+          if (mainDiv) {
+              mainDiv.innerHTML = `
+                <div class='whates-img'>
+                  <img src='${main.image}' alt='${main.title}' style='width:100%;height:260px;object-fit:cover;border-radius:8px;'>
+                </div>
+                <div class='whates-caption'>
+                  <h4><a href='${main.link}' target='_blank'>${main.title}</a></h4>
+                  <span>${main.pubDate ? new Date(main.pubDate).toLocaleDateString('fr-FR') : ''}</span>
+                  <p>${main.summary ? main.summary : ''}</p>
+                </div>
+              `;
+          }
+          // 4 news à droite
+          const sideDiv = document.querySelector('.col-xl-6.col-lg-12 > .row');
+          if (sideDiv) {
+              sideDiv.innerHTML = '';
+              newsWithImages.slice(1, 5).forEach(article => {
+                  sideDiv.innerHTML += `
+                    <div class='col-xl-12 col-lg-6 col-md-6 col-sm-10 mb-3'>
+                      <div class='whats-right-single d-flex'>
+                        <div class='whats-right-img' style='min-width:80px;width:80px;height:80px;overflow:hidden;border-radius:6px;'>
+                          <img src='${article.image}' alt='${article.title}' style='width:100%;height:100%;object-fit:cover;'>
+                        </div>
+                        <div class='whats-right-cap pl-3'>
+                          <span class='colorb'>${getCategoryFromTitle(article.title)}</span>
+                          <h4 style='font-size:15px;line-height:1.2;'><a href='${article.link}' target='_blank'>${article.title.length > 50 ? article.title.substring(0, 50) + '...' : article.title}</a></h4>
+                          <p style='font-size:13px;'>${article.pubDate ? new Date(article.pubDate).toLocaleDateString('fr-FR') : ''}</p>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+              });
+          }
+      }
+
+      async function loadNews() {
+          showTrendingLoader(); // Afficher le loader pour trending
+          await showLoader();
+          const res = await fetch('/news');
+          news = await res.json();
+          // Debug des données reçues
+          console.log('Données reçues du scraper:', news);
+          console.log('Nombre d\'articles:', news.length);
+          if (news.length > 0) {
+              console.log('Premier article complet:', news[0]);
+              console.log('Articles avec images:', news.filter(a => a.image && a.image.trim()).length);
+          }
+          currentPage = 1;
+          renderWhatsNewSection();
+          renderTrendingSection(); // Rendre la section trending
+          renderNews();
+          renderPagination();
+      }
+      // Afficher la date actuelle
+      function updateCurrentDate() {
+          const now = new Date();
+          const options = { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+          };
+          const dateString = now.toLocaleDateString('fr-FR', options);
+          const dateElement = document.getElementById('current-date');
+          if (dateElement) {
+              dateElement.textContent = dateString;
+          }
+      }
+
+      window.onload = function() {
+          updateCurrentDate();
+          loadNews();
+      };
+    </script>
+
+<!-- Search model Begin -->
+<div class="search-model-box">
+    <div class="d-flex align-items-center h-100 justify-content-center">
+        <div class="search-close-btn">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Rechercher des actualités.....">
+        </form>
+    </div>
+</div>
+<!-- Search model end -->
+
+<!-- JS here -->
+<script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="./assets/js/popper.min.js"></script>
+<script src="./assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="./assets/js/jquery.slicknav.min.js"></script>
+
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="./assets/js/owl.carousel.min.js"></script>
+<script src="./assets/js/slick.min.js"></script>
+<!-- Date Picker -->
+<script src="./assets/js/gijgo.min.js"></script>
+<!-- One Page, Animated-HeadLin -->
+<script src="./assets/js/wow.min.js"></script>
+<script src="./assets/js/animated.headline.js"></script>
+<script src="./assets/js/jquery.magnific-popup.js"></script>
+
+<!-- Scrollup, nice-select, sticky -->
+<script src="./assets/js/jquery.scrollUp.min.js"></script>
+<script src="./assets/js/jquery.nice-select.min.js"></script>
+<script src="./assets/js/jquery.sticky.js"></script>
+
+<!-- contact js -->
+<script src="./assets/js/contact.js"></script>
+<script src="./assets/js/jquery.form.js"></script>
+<script src="./assets/js/jquery.validate.min.js"></script>
+<script src="./assets/js/mail-script.js"></script>
+<script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->	
+<script src="./assets/js/plugins.js"></script>
+<script src="./assets/js/main.js"></script>
+
+</body>
+</html>
