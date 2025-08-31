@@ -13,3 +13,9 @@ Ce site affiche les actualités du ce jour à partir des plusieurs sources comme
 - Amélioration dans le design.
 - Filtrage des news (politiques, économiques, sports ...).
 - Faites du l'archivages et les favoris.
+
+# Les outils utilisés : 
+-HTML.
+-CSS.
+-JS.
+-Node.js (dans le backend).
