@@ -1,0 +1,411 @@
+<!doctype html>
+<html class="no-js" lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Détails de l'article - News Blog</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/ticker-style.css">
+    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="assets/css/slicknav.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/slick.css">
+    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src="assets/img/logo/logo.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Preloader Start-->
+    
+    <header>
+        <!-- Header Start -->
+       <div class="header-area">
+            <div class="main-header ">
+                <div class="header-top black-bg d-none d-sm-block">
+                   <div class="container">
+                       <div class="col-xl-12">
+                            <div class="row d-flex justify-content-between align-items-center">
+                                <div class="header-info-left">
+                                    <ul>     
+                                        <li class="title"><span class="flaticon-energy"></span> Blog Article</li>
+                                        <li>Détails de l'article</li>
+                                    </ul>
+                                </div>
+                                <div class="header-info-right">
+                                    <ul class="header-date">
+                                        <li><span class="flaticon-calendar"></span> <span id="current-date"></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                       </div>
+                   </div>
+                </div>
+                <div class="header-mid gray-bg">
+                   <div class="container">
+                        <div class="row d-flex align-items-center">
+                            <!-- Logo -->
+                            <div class="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
+                                <div class="logo">
+                                    <a href="index3.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-xl-9 col-lg-9 col-md-9">
+                                <div class="header-banner f-right ">
+                                    <img src="assets/img/gallery/header_card.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+               <div class="header-bottom header-sticky">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-xl-8 col-lg-8 col-md-12 header-flex">
+                                <!-- sticky -->
+                                <div class="sticky-logo">
+                                    <a href="index3.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                                </div>
+                                <!-- Main-menu -->
+                                <div class="main-menu d-none d-md-block">
+                                    <nav>                  
+                                        <ul id="navigation">
+                                            <li><a href="index3.html">Home</a></li>
+                                            <li><a href="about.html">about</a></li>
+                                            <li><a href="#">Pages</a>
+                                                <ul class="submenu">
+                                                    <li><a href="blog.html">Blog</a></li>
+                                                    <li><a href="blog_details.html">Blog Details</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4">
+                                <div class="header-right f-right d-none d-lg-block">
+                                    <a href="#" class="btn header-btn">Subscribe</a>
+                                </div>
+                            </div>
+                            <!-- Mobile Menu -->
+                            <div class="col-12">
+                                <div class="mobile_menu d-block d-md-none"></div>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+            </div>
+       </div>
+        <!-- Header End -->
+    </header>
+    
+    <!--================Blog Area =================-->
+    <section class="blog_area single-post-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 posts-list">
+                    <div class="single-post">
+                        <!-- Loader -->
+                        <div id="article-loader" class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Chargement...</span>
+                            </div>
+                            <p class="mt-3">Chargement de l'article...</p>
+                        </div>
+                        
+                        <!-- Contenu de l'article -->
+                        <div id="article-content" style="display: none;">
+                            <!-- L'article sera chargé ici -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+                        <aside class="single_sidebar_widget search_widget">
+                            <form action="#">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder='Rechercher un article'
+                                            onfocus="this.placeholder = ''"
+                                            onblur="this.placeholder = 'Rechercher un article'">
+                                        <div class="input-group-append">
+                                            <button class="btns" type="button"><i class="ti-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                    type="submit">Rechercher</button>
+                            </form>
+                        </aside>
+
+                        <aside class="single_sidebar_widget post_category_widget">
+                            <h4 class="widget_title">Catégories</h4>
+                            <ul class="list cat-list">
+                                <!-- Les catégories seront chargées ici -->
+                            </ul>
+                        </aside>
+
+                        <aside class="single_sidebar_widget popular_post_widget">
+                            <h3 class="widget_title">Articles Populaires</h3>
+                            <div class="media post_item">
+                                <img src="assets/img/post/post_1.png" alt="post">
+                                <div class="media-body">
+                                    <a href="blog-details.html">
+                                        <h3>From life was you fish...</h3>
+                                    </a>
+                                    <p>January 12, 2019</p>
+                                </div>
+                            </div>
+                            <div class="media post_item">
+                                <img src="assets/img/post/post_2.png" alt="post">
+                                <div class="media-body">
+                                    <a href="blog-details.html">
+                                        <h3>The Amazing Hubble</h3>
+                                    </a>
+                                    <p>02 Hours ago</p>
+                                </div>
+                            </div>
+                            <div class="media post_item">
+                                <img src="assets/img/post/post_3.png" alt="post">
+                                <div class="media-body">
+                                    <a href="blog-details.html">
+                                        <h3>Astronomy Or Astrology</h3>
+                                    </a>
+                                    <p>03 Hours ago</p>
+                                </div>
+                            </div>
+                            <div class="media post_item">
+                                <img src="assets/img/post/post_4.png" alt="post">
+                                <div class="media-body">
+                                    <a href="blog-details.html">
+                                        <h3>Asteroids telescope</h3>
+                                    </a>
+                                    <p>01 Hours ago</p>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================Blog Area =================-->
+    
+    <footer>
+        <!-- Footer Start-->
+        <div class="footer-main footer-bg">
+            <div class="footer-area footer-padding">
+                <div class="container">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-xl-3 col-lg-3 col-md-5 col-sm-8">
+                            <div class="single-footer-caption mb-50">
+                                <div class="single-footer-caption mb-30">
+                                    <!-- logo -->
+                                    <div class="footer-logo">
+                                        <a href="index3.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+                                    </div>
+                                    <div class="footer-tittle">
+                                        <div class="footer-pera">
+                                            <p>Votre source d'information fiable pour les dernières nouvelles et analyses.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- footer-bottom aera -->
+            <div class="footer-bottom-area footer-bg">
+                <div class="container">
+                    <div class="footer-border">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-xl-12 ">
+                                    <div class="footer-copy-right text-center">
+                                        <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved</p>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End-->
+    </footer>
+
+    <!-- JS here -->
+    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/jquery.slicknav.min.js"></script>
+    <script src="./assets/js/owl.carousel.min.js"></script>
+    <script src="./assets/js/slick.min.js"></script>
+    <script src="./assets/js/wow.min.js"></script>
+    <script src="./assets/js/animated.headline.js"></script>
+    <script src="./assets/js/jquery.scrollUp.min.js"></script>
+    <script src="./assets/js/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/jquery.sticky.js"></script>
+    <script src="./assets/js/jquery.magnific-popup.js"></script>
+    <script src="./assets/js/contact.js"></script>
+    <script src="./assets/js/jquery.form.js"></script>
+    <script src="./assets/js/jquery.validate.min.js"></script>
+    <script src="./assets/js/mail-script.js"></script>
+    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+    <script src="./assets/js/plugins.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+    <!-- Blog Details Dynamic JavaScript -->
+    <script>
+        // Variables globales
+        let currentArticle = null;
+
+        // Fonction pour obtenir l'ID de l'article depuis l'URL
+        function getArticleIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Fonction pour charger l'article
+        async function loadArticle() {
+            const articleId = getArticleIdFromUrl();
+            
+            if (!articleId) {
+                showError('ID de l\'article manquant');
+                return;
+            }
+
+            try {
+                showLoader();
+                
+                const response = await fetch(`/blog/posts/${articleId}`);
+                
+                if (!response.ok) {
+                    throw new Error('Article non trouvé');
+                }
+                
+                currentArticle = await response.json();
+                renderArticle();
+                hideLoader();
+                
+                console.log('📝 Article chargé:', currentArticle.title);
+            } catch (error) {
+                console.error('❌ Erreur chargement article:', error);
+                showError('Erreur lors du chargement de l\'article');
+                hideLoader();
+            }
+        }
+
+        // Fonction pour rendre l'article
+        function renderArticle() {
+            if (!currentArticle) return;
+            
+            const container = document.getElementById('article-content');
+            
+            container.innerHTML = `
+                <div class="feature-img">
+                    <img class="img-fluid" src="${currentArticle.image}" alt="${currentArticle.title}" 
+                         style="width:100%;height:400px;object-fit:cover;" 
+                         onerror="this.src='assets/img/blog/single_blog_1.png'">
+                </div>
+                <div class="blog_details">
+                    <h2>${currentArticle.title}</h2>
+                    <ul class="blog-info-link">
+                        <li><a href="#"><i class="fa fa-user"></i> ${currentArticle.category}</a></li>
+                        <li><a href="#"><i class="fa fa-comments"></i> ${currentArticle.comments_count} Commentaires</a></li>
+                        <li><a href="#"><i class="fa fa-clock"></i> ${currentArticle.read_time}</a></li>
+                        <li><a href="#"><i class="fa fa-eye"></i> ${currentArticle.views_count} vues</a></li>
+                    </ul>
+                    <p class="excerpt">${currentArticle.excerpt}</p>
+                    <div class="content">
+                        ${currentArticle.content.split('\n').map(paragraph => 
+                            `<p>${paragraph}</p>`
+                        ).join('')}
+                    </div>
+                    <div class="tags mt-4">
+                        <h5>Tags:</h5>
+                        ${currentArticle.tags.map(tag => 
+                            `<span class="badge badge-secondary mr-2">${tag}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="article-meta mt-4">
+                        <p><strong>Auteur:</strong> ${currentArticle.author}</p>
+                        <p><strong>Publié le:</strong> ${new Date(currentArticle.publish_date).toLocaleDateString('fr-FR')}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fonction pour afficher le loader
+        function showLoader() {
+            document.getElementById('article-loader').style.display = 'block';
+            document.getElementById('article-content').style.display = 'none';
+        }
+
+        // Fonction pour masquer le loader
+        function hideLoader() {
+            document.getElementById('article-loader').style.display = 'none';
+            document.getElementById('article-content').style.display = 'block';
+        }
+
+        // Fonction pour afficher une erreur
+        function showError(message) {
+            document.getElementById('article-content').innerHTML = `
+                <div class="text-center py-5">
+                    <h4>Erreur</h4>
+                    <p>${message}</p>
+                    <a href="blog.html" class="btn btn-primary">Retour au blog</a>
+                </div>
+            `;
+            hideLoader();
+        }
+
+        // Fonction pour mettre à jour la date
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            const dateString = now.toLocaleDateString('fr-FR', options);
+            const dateElement = document.getElementById('current-date');
+            if (dateElement) {
+                dateElement.textContent = dateString;
+            }
+        }
+
+        // Initialisation au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initialisation de la page détails article...');
+            
+            updateCurrentDate();
+            loadArticle();
+            
+            console.log('✅ Page détails article initialisée !');
+        });
+    </script>
+
+</body>
+</html>
