@@ -1,6 +1,9 @@
 # 📰 Agrégateur de Nouvelles - News Master
 
-Un agrégateur de nouvelles moderne qui collecte et affiche des actualités de différentes sources RSS, organisées par catégories.
+Un agrégateur de nouvelles moderne qui collecte et affiche des actualités de différentes sources RSS, organisées par catégories, filtrés par l'algorithme "Naive Bayes".
+
+![Uploading GitHub.png…]()
+
 
 ## ✨ Fonctionnalités
 
