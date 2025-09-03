@@ -2,7 +2,7 @@
 
 Un agrégateur de nouvelles moderne qui collecte et affiche des actualités de différentes sources RSS, organisées par catégories, filtrés par l'algorithme "Naive Bayes".
 
-![Uploading GitHub.png…]()
+<img width="959" height="439" alt="GitHub" src="https://github.com/user-attachments/assets/98118594-ce13-4eb6-bdd9-b4b4c0824167" />
 
 
 ## ✨ Fonctionnalités
