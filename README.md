@@ -12,6 +12,9 @@ Un agrégateur de nouvelles moderne qui collecte et affiche des actualités de d
 - **🔍 Recherche** : Fonction de recherche intégrée
 - **📱 Navigation par onglets** : Interface intuitive avec onglets
 
+<img width="1919" height="877" alt="Capture d'écran 2025-09-03 090324" src="https://github.com/user-attachments/assets/05fed7fa-daa8-4414-adf8-4272a11a8ded" />
+
+
 ## 🚀 Installation
 
 ### Prérequis
